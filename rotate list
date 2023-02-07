@@ -1,0 +1,143 @@
+#include<iostream>
+using namespace std;
+class node{
+    public:
+    int data;
+    node* next;
+
+    node(int data){
+        this->data = data;
+        this->next = NULL;
+    }
+    ~node(){
+        int value = this->data;
+        if(this->next != NULL){
+            delete next;
+            this->next = NULL;
+        }
+        cout << "node is deleted whose value was" << value <<endl;
+    }
+};
+void insertathead(int d,node* &head){
+    node* temp = new node(d);
+    temp->next = head;
+    head = temp;
+}
+void insertattail(int d,node* &tail){
+    node* temp = new node(d);
+    tail->next = temp;
+    tail = temp;
+}
+void insertatmid(int d,int pos,node* &head,node* &tail){
+    node* temp = head;
+    int c=1;
+    if(pos == 1){
+       insertathead(d,head);
+       return;
+    }
+    while(c < pos - 1){
+        temp = temp->next;
+        c++;
+    }
+    if(temp->next == NULL){
+        insertattail(d,tail);
+        return;
+    }
+    node * nodetoinsert = new node(d);
+    nodetoinsert->next = temp->next;
+    temp->next = nodetoinsert;
+}
+void deleteatpos(int pos,node* &head){
+    
+    if(pos == 1){
+        node*temp = head;
+        head = head->next;
+        temp->next = NULL;
+        delete temp;
+    }
+    else{
+        int c=1;
+        node*curr = head;
+        node* pre  = NULL;
+        while(c < pos){
+            pre = curr;
+            curr = curr->next;
+            c++;
+        }
+        pre->next = curr->next;
+        curr->next = NULL;
+        delete curr;
+    }
+}
+node* deleteDuplicates(node* &head) {
+        node* temp = head;
+        while(temp !=NULL && temp->next!=NULL){
+            if(temp->data == temp->next->data){
+                temp->next=temp->next->next;
+               
+            }
+            else{
+                temp=temp->next;
+            }
+        } 
+        return head;
+    }
+  node* rotateRight(node* head, int k) {
+       if(!head || !head->next){
+            return head;
+        }
+        node* temp = head;
+        node* ptr = head;
+        int c = 1;
+        while(temp->next != NULL){
+            c++;
+            temp = temp->next;
+        }
+        temp->next = head;
+        k = k % c;
+        for(int i=0;i<c-k-1;i++){
+            ptr = ptr->next;
+        }
+        head = ptr->next;
+        ptr->next = NULL;
+        return head;
+    }
+
+void print(node* head){
+    node* temp=head;
+    while(temp != NULL){
+        cout<< temp->data<<" ";
+        temp = temp->next;
+    }
+}
+int main(){
+    node* node1 = new node(1);
+    // cout<<node1->data<<endl;
+    // cout<<node1->next<<endl;
+    node* head = node1;
+    node* tail = node1;
+
+    // insertathead(15,head);
+    // insertathead(20,head);
+
+    insertattail(2,tail);
+    insertattail(3,tail);
+    insertattail(4,tail);
+    insertattail(5,tail);
+
+    // insertatmid(33,5,head,tail);
+
+
+    print(head);
+    // cout<<endl;
+    // cout<< "head" << " " <<head->data<<endl;
+    // cout<<"tail" << " "<<tail->data<<endl;
+
+    // deleteatpos(5,head);
+    // print(head);
+
+    // print(deleteDuplicates(head));
+    print(rotateRight(head,2));
+
+    
+}
